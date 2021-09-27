@@ -1,3 +1,5 @@
+const CPF_LENGTH = 11;
+
 export class Cpf {
   private readonly cpf: string;
 
@@ -8,16 +10,10 @@ export class Cpf {
   isValid(): boolean {
     this.validateFormat();
 
-    try {
-      const cpfCheckDigits = this.getCpfCheckDigits();
-      const validCheckDigits = this.getValidCheckDigits();
+    const cpfCheckDigits = this.getCpfCheckDigits();
+    const validCheckDigits = this.getValidCheckDigits();
 
-      return cpfCheckDigits === validCheckDigits;
-    } catch (e) {
-      console.error(e);
-
-      return false;
-    }
+    return cpfCheckDigits === validCheckDigits;
   }
 
   private validateFormat(): void | Error {
@@ -28,9 +24,9 @@ export class Cpf {
     }
   }
 
-  private hasCorrectLength = (): boolean => this.getUnmaskedCpf().length === 11;
+  private hasCorrectLength = (): boolean => this.getUnmaskedCpf().length === CPF_LENGTH;
 
-  private repeatDigits = (): boolean => this.cpf.split("").every(digit => digit === this.cpf[0]);
+  private repeatDigits = (): boolean => [...this.cpf].every(digit => digit === this.cpf[0]);
 
   private getCpfCheckDigits = (): string => this.cpf.substring(this.cpf.length - 2, this.cpf.length);
 
@@ -44,7 +40,7 @@ export class Cpf {
   private getValidCheckDigit(firstCheckDigit?: number): number {
     const cpf = this.getUnmaskedCpf();
 
-    let validationKey = cpf.split("")
+    let validationKey = [...cpf]
       .slice(0, -2)
       .map(Number)
       .reduce((validation: number, currentDigit: number, currentDigitIndex: number) =>
@@ -55,10 +51,10 @@ export class Cpf {
       validationKey += 2 * firstCheckDigit;
     }
 
-    validationKey %= 11;
+    validationKey %= CPF_LENGTH;
 
-    return validationKey < 2 ? 0 : 11 - validationKey;
+    return validationKey < 2 ? 0 : CPF_LENGTH - validationKey;
   }
 
-  private getUnmaskedCpf = (): string => this.cpf.replace(/[^0-9]/g, "");
+  private getUnmaskedCpf = (): string => this.cpf.replace(/[\D]/g, "");
 }
