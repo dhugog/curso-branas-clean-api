@@ -1,6 +1,6 @@
 const CPF_LENGTH = 11;
 
-export class Cpf {
+export default class Cpf {
   private readonly cpf: string;
 
   constructor(cpf: string) {
@@ -26,7 +26,7 @@ export class Cpf {
 
   private hasCorrectLength = (): boolean => this.getUnmaskedCpf().length === CPF_LENGTH;
 
-  private repeatDigits = (): boolean => [...this.cpf].every(digit => digit === this.cpf[0]);
+  private repeatDigits = (): boolean => [...this.getUnmaskedCpf()].every(digit => digit === this.cpf[0]);
 
   private getCpfCheckDigits = (): string => this.cpf.substring(this.cpf.length - 2, this.cpf.length);
 
