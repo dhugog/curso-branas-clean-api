@@ -1,4 +1,4 @@
-import { Cpf } from "./cpf";
+import Cpf from "./cpf";
 
 describe('CPF Validator', () => {
   test('Should validate a valid CPF', () => {
