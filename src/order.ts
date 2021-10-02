@@ -38,11 +38,7 @@ export default class Order {
   getFreight = (distance: number) => {
     const freight = this.items.reduce((total: number, item: OrderItem) => total + item.calculateFreight(distance), 0);
 
-    if (freight < 10) {
-      return 10;
-    }
-
-    return freight;
+    return freight < 10 ? 10 : freight;
   }
 
 }
