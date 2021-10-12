@@ -1,6 +1,6 @@
-import Coupon from "./coupon";
-import Item from "./item";
-import Order from "./order";
+import Coupon from "../entities/coupon";
+import Item from "../entities/item";
+import Order from "../entities/order";
 
 describe('Order', () => {
   test('Should throw if instantiated with an invalid CPF', () => {

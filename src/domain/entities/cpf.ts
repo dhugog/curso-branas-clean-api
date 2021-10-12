@@ -16,6 +16,8 @@ export default class Cpf {
     return cpfCheckDigits === validCheckDigits;
   }
 
+  getUnmaskedCpf = (): string => this.cpf.replace(/[\D]/g, "");
+
   private validateFormat(): void | Error {
     const cpfBeingValidated = this.getUnmaskedCpf();
 
@@ -55,6 +57,4 @@ export default class Cpf {
 
     return validationKey < 2 ? 0 : CPF_LENGTH - validationKey;
   }
-
-  private getUnmaskedCpf = (): string => this.cpf.replace(/[\D]/g, "");
 }

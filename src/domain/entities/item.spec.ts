@@ -14,4 +14,12 @@ describe('Item', () => {
 
     expect(volume).toBe(40);
   })
+
+  test('Should throw error if try to calculate volume of an item without dimensions', () => {
+    const item = new Item(1, 'Eletrodomésticos', 'Geladeira', 2000);
+
+    expect(() => {
+      item.getVolume();
+    }).toThrowError('Dimensions not defined');
+  })
 })

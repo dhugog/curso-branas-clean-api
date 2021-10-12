@@ -4,9 +4,10 @@ import Item from "./item";
 import OrderItem from "./order-item";
 
 export default class Order {
-  private cpf: Cpf;
   private items: OrderItem[];
   private coupon: Coupon | undefined;
+  private cpf: Cpf;
+  private code: number | undefined;
 
   constructor(cpf: string) {
     this.cpf = new Cpf(cpf);
@@ -21,10 +22,31 @@ export default class Order {
     this.items = [];
   }
 
-  addItem = (item: Item, quantity: number) =>
-    this.items.push(new OrderItem(item, item.price, quantity));
+  getItems(): OrderItem[] {
+    return this.items;
+  }
 
-  addCoupon = (coupon: Coupon) => {
+  getCoupon(): Coupon | undefined {
+    return this.coupon;
+  }
+
+  getCpf(): Cpf {
+    return this.cpf;
+  }
+
+  getCode(): number | undefined {
+    return this.code;
+  }
+
+  setCode(code: number): void {
+    this.code = code;
+  }
+
+  addItem(item: Item, quantity: number) {
+    this.items.push(new OrderItem(item, item.price, quantity));
+  }
+
+  addCoupon(coupon: Coupon) {
     if (!coupon.isValid()) {
       throw new Error("Cupom inválido");
     }
@@ -32,13 +54,13 @@ export default class Order {
     this.coupon = coupon;
   }
 
-  getTotal = () =>
-    this.items.reduce((total: number, item: OrderItem) => total + item.getTotal(), 0) * (1 - (this.coupon ? this.coupon.percentage / 100 : 0));
+  getTotal() {
+    return this.items.reduce((total: number, item: OrderItem) => total + item.getTotal(), 0) * (1 - (this.coupon ? this.coupon.percentage / 100 : 0));
+  }
 
-  getFreight = (distance: number) => {
+  getFreight(distance: number) {
     const freight = this.items.reduce((total: number, item: OrderItem) => total + item.calculateFreight(distance), 0);
 
     return freight < 10 ? 10 : freight;
   }
-
 }
